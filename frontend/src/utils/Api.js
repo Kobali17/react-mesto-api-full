@@ -16,11 +16,11 @@ class Api {
   }
 
   takeCardLike(cardId) {
-    return this._fetch(`/cards/likes/${cardId}`, 'PUT');
+    return this._fetch(`/cards/${cardId}/likes`, 'PUT');
   }
 
   removeCardLke(cardId) {
-    return this._fetch(`/cards/likes/${cardId}`, 'DELETE');
+    return this._fetch(`/cards/${cardId}/likes`, 'DELETE');
   }
 
   changeLikeCardStatus(cardId, isLiked) {
@@ -54,8 +54,10 @@ class Api {
   _fetch(url, method, body) {
     return fetch(this._baseUrl + url, {
       method,
-      headers:
-            this._headers,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        ...this._headers,
+      },
       body,
     }).then((res) => {
       if (res.ok) {
@@ -69,7 +71,6 @@ class Api {
 const api = new Api({
   baseUrl: '/api',
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   },
 });

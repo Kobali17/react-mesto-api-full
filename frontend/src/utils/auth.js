@@ -33,7 +33,6 @@ export const logIn = ({ email, password }) => fetch(`${BASE_URL}/signin`, {
     return Promise.reject(`Ошибка: ${res.status}`);
   })
   .then((data) => {
-    console.log(data);
     if (data != null) {
       localStorage.setItem('token', data.token);
     }
@@ -53,5 +52,4 @@ export const tokenValid = (token) => fetch(`${BASE_URL}/users/me`, {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((res) => res);
+  });

@@ -19,6 +19,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   const [currentUser, setUserData] = React.useState({
+    _id: '',
     name: '',
     about: '',
     avatar: '',
@@ -37,10 +38,10 @@ function App() {
   const [isRegisterSuccess, setRegisterSuccess] = React.useState(true);
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  function getInitialData(email) {
+  function getInitialData() {
     setLoggedIn(true);
     return Promise.all([api.getInitialCards(), api.getUserData()]).then(([resp, response]) => {
-      setUserData({ ...response, email });
+      setUserData({ ...response });
       setCards(resp);
     });
   }
@@ -50,7 +51,9 @@ function App() {
     if (token !== null) {
       auth.tokenValid(token).then((res) => {
         if (res) {
-          getInitialData(res.data.email);
+          getInitialData().catch((err) => {
+            console.log(err);
+          });
         } else {
           setLoggedIn(false);
         }
@@ -118,7 +121,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
@@ -164,7 +167,7 @@ function App() {
   function handleLogin(loginData) {
     auth.logIn(loginData).then((res) => {
       if (res !== null) {
-        getInitialData(loginData.email).catch((err) => {
+        getInitialData().catch((err) => {
           console.log(err);
         });
       }
