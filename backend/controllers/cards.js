@@ -8,10 +8,10 @@ module.exports.createCard = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({}).then((cards) => {
     res.send(cards);
-  }).catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  }).catch(next);
 };
 
 module.exports.deleteCard = (req, res, next) => {
