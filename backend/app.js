@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost:27017/mydb', {
 const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
+app.use(bodyParser.json());
 app.post('/api/signin', login);
 app.post('/api/signup', celebrate({
   body: Joi.object().keys({
@@ -29,7 +30,6 @@ app.post('/api/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.use(bodyParser.json());
 app.use('/api', auth, cards);
 app.use('/api', auth, users);
 app.get('*', (req, res, next) => {
@@ -41,9 +41,6 @@ app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  if (statusCode === 500) {
-    console.log(message);
-  }
   res.status(statusCode)
     .send({
       message: statusCode === 500
