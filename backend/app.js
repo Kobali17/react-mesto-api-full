@@ -20,7 +20,7 @@ const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
 app.post('/api/signin', login);
-app.post('/users', celebrate({
+app.post('/api/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
