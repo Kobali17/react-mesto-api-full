@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 const cards = require('./routes/cards.js');
-const { users, login, createUser } = require('./routes/users.js');
+const users = require('./routes/users.js');
+const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./middlewares/errors/not-found-err.js');
@@ -18,7 +20,15 @@ const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
 app.post('/api/signin', login);
-app.post('/api/signup', createUser);
+app.post('/users', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri(),
+  }),
+}), createUser);
 app.use(bodyParser.json());
 app.use('/api', auth, cards);
 app.use('/api', auth, users);
