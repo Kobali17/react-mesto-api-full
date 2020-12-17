@@ -17,11 +17,11 @@ mongoose.connect('mongodb://localhost:27017/mydb', {
 const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/api/signin', login);
+app.post('/api/signup', createUser);
 app.use(bodyParser.json());
-app.use('/', auth, cards);
-app.use('/', auth, users);
+app.use('/api', auth, cards);
+app.use('/api', auth, users);
 app.get('*', (req, res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
