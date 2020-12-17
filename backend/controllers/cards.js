@@ -15,8 +15,8 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndDelete(req.params.cardId).orFail().then(() => {
-    res.status(200).send();
+  Card.findByIdAndDelete(req.params.cardId).orFail().then((card) => {
+    res.status(200).send(card);
   })
     .catch(next);
 };
