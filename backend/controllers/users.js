@@ -14,14 +14,14 @@ module.exports.createUser = (req, res, next) => {
       name,
       about,
       avatar,
-    }))
-    .then((user) => {
-      const userData = {
-        email: user.email, name: user.name, about: user.about, avatar: user.avatar,
-      };
-      res.send(userData);
     })
-    .catch(next);
+      .then((user) => {
+        const userData = {
+          email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+        };
+        res.send(userData);
+      })
+      .catch(next));
 };
 
 module.exports.getUserInfo = (req, res, next) => {

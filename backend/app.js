@@ -48,7 +48,7 @@ app.get('*', (req, res, next) => {
 
 app.use(errorLogger);
 
-// app.use(errors());
+app.use(errors());
 
 app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
