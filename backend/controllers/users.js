@@ -14,7 +14,12 @@ module.exports.createUser = (req, res, next) => {
       about,
       avatar,
     }))
-    .then((user) => res.send(user))
+    .then((user) => {
+      const userData = {
+        email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+      };
+      res.send(userData);
+    })
     .catch(next);
 };
 
