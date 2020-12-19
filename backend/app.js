@@ -50,14 +50,14 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res) => {
-  // const { statusCode = 500, message } = err;
-  res.status(400).send({ message: 'OLOLO' });
-  // .send({
-  //   message: statusCode === 500
-  //     ? 'На сервере произошла ошибка'
-  //     : message,
-  // });
+app.use((err, req, res, _) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
 });
 app.listen(PORT, () => {
   console.log(`Listen on port ${PORT}`);
