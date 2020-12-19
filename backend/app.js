@@ -20,7 +20,17 @@ const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
 app.use(bodyParser.json());
-app.post('/api/signin', login);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+app.post('/api/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 app.post('/api/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -39,7 +49,7 @@ app.get('*', (req, res, next) => {
 app.use(errorLogger);
 
 app.use(errors());
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode)
     .send({

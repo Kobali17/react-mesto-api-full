@@ -4,30 +4,26 @@
   "description": "Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`.",
   "main": "index.js",
   "dependencies": {
-    "app": "^0.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "celebrate": "^13.0.4",
-    "create": "0.0.2",
-    "eslint": "^7.15.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "exports": "0.0.1",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
-    "hash": "^0.2.1",
     "jsonwebtoken": "^8.5.1",
-    "module": "^1.2.5",
     "mongoose": "^5.11.8",
     "react": "^17.0.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
