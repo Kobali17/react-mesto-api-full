@@ -9,8 +9,8 @@ module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email,
   } = req.body;
-  User.find({ email }).then((user) => {
-    if (user === null) {
+  User.find({ email }).then((u) => {
+    if (u === null) {
       bcrypt.hash(req.body.password, 10)
         .then((hash) => User.create({
           email,
