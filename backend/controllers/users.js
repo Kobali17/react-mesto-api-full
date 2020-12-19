@@ -20,8 +20,7 @@ module.exports.createUser = (req, res, next) => {
           email: user.email, name: user.name, about: user.about, avatar: user.avatar,
         };
         res.send(userData);
-      })
-      .catch((err) => next(new Error('')))).catch(next);
+      })).catch(next);
 };
 
 module.exports.getUserInfo = (req, res, next) => {
