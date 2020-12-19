@@ -25,6 +25,7 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+
 app.post('/api/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -40,12 +41,15 @@ app.post('/api/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.get('*', (req, res, next) => {
+
+app.use('/api/cards*', auth);
+app.use('/api', cards);
+app.use('/api/users*', auth);
+app.use('/api', users);
+
+app.use((req, res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
-
-app.use('/api', auth, cards);
-app.use('/api', auth, users);
 
 app.use(errorLogger);
 
