@@ -21,7 +21,7 @@ module.exports.createUser = (req, res, next) => {
         };
         res.send(userData);
       })
-      .catch(next));
+      .catch(next)).catch(next);
 };
 
 module.exports.getUserInfo = (req, res, next) => {
