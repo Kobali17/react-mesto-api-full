@@ -33,8 +33,8 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id).orFail().then((user) => {
-    console.log(user);
-    res.send(user);
+    const userData = { email: user.email };
+    res.send(userData);
   })
     .catch(next);
 };
