@@ -2,25 +2,33 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../middlewares/errors/unauthorized-err.js');
 const NotFoundError = require('../middlewares/errors/not-found-err.js');
+const BadRequestError = require('../middlewares/errors/bad-req-err.js');
 const User = require('../models/user');
 
 module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar } = req.body;
-
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
-      email: req.body.email,
-      password: hash,
-      name,
-      about,
-      avatar,
-    })
-      .then((user) => {
-        const userData = {
-          email: user.email, name: user.name, about: user.about, avatar: user.avatar,
-        };
-        res.send(userData);
-      })).catch(next);
+  const {
+    name, about, avatar, email,
+  } = req.body;
+  User.find({ email }).then((user) => {
+    if (user === null) {
+      bcrypt.hash(req.body.password, 10)
+        .then((hash) => User.create({
+          email,
+          password: hash,
+          name,
+          about,
+          avatar,
+        })
+          .then((user) => {
+            const userData = {
+              email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+            };
+            res.send(userData);
+          })).catch(next);
+    } else {
+      throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
+    }
+  }).catch(next);
 };
 
 module.exports.getUserInfo = (req, res, next) => {
