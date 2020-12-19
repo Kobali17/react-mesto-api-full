@@ -40,11 +40,12 @@ app.post('/api/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.use('/api', auth, cards);
-app.use('/api', auth, users);
 app.get('*', (req, res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
+
+app.use('/api', auth, cards);
+app.use('/api', auth, users);
 
 app.use(errorLogger);
 
