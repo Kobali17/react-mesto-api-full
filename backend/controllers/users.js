@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../middlewares/errors/unauthorized-err.js');
+const NotFoundError = require('../middlewares/errors/not-found-err.js');
 const User = require('../models/user');
 
 module.exports.createUser = (req, res, next) => {
@@ -24,7 +25,7 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getUserInfo = (req, res, next) => {
-  User.findById(req.user._id).orFail().then((user) => {
+  User.findById(req.user._id).orFail(new NotFoundError('Пользователь не найден')).then((user) => {
     res.send(user);
   })
     .catch(next);
