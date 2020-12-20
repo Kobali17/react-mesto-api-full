@@ -25,7 +25,7 @@ module.exports.createUser = (req, res, next) => {
       res.send(userData);
     }).catch((err) => {
       console.log(err);
-      err.send(err);
+      next(err);
       // if (err.statusCode === undefined) {
       //   next();
       // } else {
