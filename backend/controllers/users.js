@@ -17,20 +17,20 @@ module.exports.createUser = (req, res, next) => {
       name,
       about,
       avatar,
-    }))
-    .then((user) => {
-      const userData = {
-        email: user.email, name: user.name, about: user.about, avatar: user.avatar,
-      };
-      res.send(userData);
-    }).catch((err) => {
-      if (err.code === 11000) {
+    })
+      .then((user) => {
+        const userData = {
+          email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+        };
+        res.send(userData);
+      }).catch((err) => {
+        if (err.code === 11000) {
         // duplication error
-        throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
-      } else {
-        next(err);
-      }
-    });
+          throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
+        } else {
+          next(err);
+        }
+      }));
 };
 
 module.exports.getUserInfo = (req, res, next) => {
