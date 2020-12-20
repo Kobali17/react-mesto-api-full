@@ -24,7 +24,6 @@ module.exports.createUser = (req, res, next) => {
       };
       res.send(userData);
     }).catch((err) => {
-      err.send(err);
       if (err.code === 11000) {
         // duplication error
         throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
