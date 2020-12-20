@@ -1,5 +1,6 @@
 const Card = require('../models/card');
 const NotFoundError = require('../middlewares/errors/not-found-err.js');
+const ForbiddenError = require('../middlewares/errors/forbidden-err.js');
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
@@ -16,12 +17,14 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  if (req.params.owner === req.user._id) {
-    Card.findByIdAndDelete(req.params.cardId).orFail(new NotFoundError('Карточка не найдена')).then((card) => {
+  Card.findByIdAndDelete(req.params.cardId).orFail(new NotFoundError('Карточка не найдена')).then((card) => {
+    if (card.owner === req.user._id) {
       res.status(200).send(card);
-    })
-      .catch(next);
-  }
+    } else {
+      throw new ForbiddenError('Недостаточно прав');
+    }
+  })
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {

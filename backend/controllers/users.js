@@ -9,26 +9,28 @@ module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email,
   } = req.body;
-  User.find({ email }).then((u) => {
-    if (u === null) {
-      bcrypt.hash(req.body.password, 10)
-        .then((hash) => User.create({
-          email,
-          password: hash,
-          name,
-          about,
-          avatar,
-        })
-          .then((user) => {
-            const userData = {
-              email: user.email, name: user.name, about: user.about, avatar: user.avatar,
-            };
-            res.send(userData);
-          })).catch(next);
-    } else {
-      throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
-    }
-  }).catch(next);
+
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => User.create({
+      email,
+      password: hash,
+      name,
+      about,
+      avatar,
+    }))
+    .then((user) => {
+      const userData = {
+        email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+      };
+      res.send(userData);
+    }).catch((err) => {
+      err.send(err);
+      if (err.statusCode === undefined) {
+        next();
+      } else {
+        throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
+      }
+    });
 };
 
 module.exports.getUserInfo = (req, res, next) => {
@@ -45,7 +47,7 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getUser = (req, res, next) => {
-  User.findById(req.params.id).orFail().then((user) => {
+  User.findById(req.params.id).orFail(new NotFoundError('Пользователь не найден')).then((user) => {
     const userData = { email: user.email };
     res.send(userData);
   })
