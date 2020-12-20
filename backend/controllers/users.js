@@ -30,7 +30,7 @@ module.exports.createUser = (req, res, next) => {
         } else {
           next(err);
         }
-      }));
+      })).catch(next);
 };
 
 module.exports.getUserInfo = (req, res, next) => {
