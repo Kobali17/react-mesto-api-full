@@ -24,13 +24,13 @@ module.exports.createUser = (req, res, next) => {
       };
       res.send(userData);
     }).catch((err) => {
-      console.log(err);
-      next(err);
-      // if (err.statusCode === undefined) {
-      //   next();
-      // } else {
-      //   throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
-      // }
+      err.send(err);
+      if (err.code === 11000) {
+        // duplication error
+        throw new BadRequestError('Пользователь с таким email уже зарегистрирован');
+      } else {
+        next(err);
+      }
     });
 };
 
