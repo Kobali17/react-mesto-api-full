@@ -48,8 +48,7 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id).orFail(new NotFoundError('Пользователь не найден')).then((user) => {
-    const userData = { email: user.email };
-    res.send(userData);
+    res.send(user);
   })
     .catch(next);
 };

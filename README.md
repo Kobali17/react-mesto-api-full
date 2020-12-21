@@ -3,8 +3,8 @@
 
 
 
-Адрес: http://mesto-lunara.students.nomoredomains.icu
-Доменное имя: mesto-lunara.students.nomoredomains.icu
+Адрес: http://mesto-lunara.students.nomoredomains.icu  
+Доменное имя: mesto-lunara.students.nomoredomains.icu  
 IP: 178.154.228.53
 
 
