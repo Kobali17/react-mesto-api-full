@@ -19,7 +19,7 @@ module.exports.getCards = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId).orFail(new NotFoundError('Карточка не найдена')).then((card) => {
     if (card.owner.toString() === req.user._id.toString()) {
-      Card.findByIdAndDelete(card.id).then((resp) => resp.status(200).send(card));
+      Card.findByIdAndDelete(card._id).then((resp) => resp.status(200).send(card));
     } else {
       throw new ForbiddenError('Недостаточно прав');
     }
