@@ -17,15 +17,25 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndDelete(req.params.cardId).orFail(new NotFoundError('Карточка не найдена')).then((card) => {
+  Card.findById(req.params.cardId).orFail(new NotFoundError('Карточка не найдена')).then((card) => {
     if (card.owner.toString() === req.user._id.toString()) {
+      Card.findByIdAndRemove(card.id);
       res.status(200).send(card);
     } else {
       throw new ForbiddenError('Недостаточно прав');
     }
-  })
-    .catch(next);
+  }).catch(next);
 };
+//   Card.findByIdAndDelete(req.params.cardId).orFail(new
+//   NotFoundError('Карточка не найдена')).then((card) => {
+//     if (card.owner.toString() === req.user._id.toString()) {
+//       res.status(200).send(card);
+//     } else {
+//       throw new ForbiddenError('Недостаточно прав');
+//     }
+//   })
+//    ;
+// };
 
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
